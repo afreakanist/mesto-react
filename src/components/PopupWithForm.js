@@ -1,43 +1,46 @@
-// import { useEffect } from "react";
+import { useEffect } from "react";
 
-function PopupWithForm(props) {
-  /* useEffect(() => {
+function PopupWithForm({ isOpen, onClose, name, title, children, btnText }) {
+  const handleOverlayClick = (event) => {
+    if (event.target === event.currentTarget && isOpen) onClose();
+  };
+
+  useEffect(() => {
     const handleEscClick = (event) => {
-      if (event.key === "Escape") props.onClose();
-    };
-    const handleOverlayClick = (event) => {
-      if (event.target.classList.contains('popup_opened')) props.onClose();
+      if (event.key === "Escape") onClose();
     };
 
     document.addEventListener("keydown", handleEscClick);
-    document.querySelector(`.popup_${props.name}`).addEventListener("click", handleOverlayClick);
 
     return () => {
       document.removeEventListener("keydown", handleEscClick);
-      document.querySelector(`.popup_${props.name}`).removeEventListener("click", handleOverlayClick);
     };
-  }); */
+  });
 
   return (
     <div
-      className={`popup popup_${props.name} ${
-        props.isOpen ? "popup_opened" : null
+      className={`popup popup_${name} ${
+        isOpen ? "popup_opened" : null
       }`}
+      onClick={handleOverlayClick}
     >
       <div className="popup__container">
         <button
           type="button"
           aria-label="Закрыть окно"
           className="popup__close-button button"
-          onClick={props.onClose}
+          onClick={onClose}
         ></button>
-        <h2 className="popup__title">{props.title}</h2>
+        <h2 className="popup__title">{title}</h2>
         <form
-          className={`popup__form popup__form_type_${props.name}`}
+          className={`popup__form popup__form_type_${name}`}
           name="edit"
           noValidate
         >
-          {props.children}
+          {children}
+          <button type="submit" className="popup__submit-button">
+            {btnText}
+          </button>
         </form>
       </div>
     </div>

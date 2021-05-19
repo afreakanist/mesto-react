@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import api from "../utils/api";
 import Card from "./Card";
 
-function Main(props) {
+function Main({ onEditProfile, onEditAvatar, onAddPlace, onCardClick }) {
   const [userName, setUserName] = useState("");
   const [userDescription, setUserDescription] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()]).then(
-      ([{ name, about, avatar, _id }, data]) => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([{ name, about, avatar, _id }, data]) => {
         setUserName(name);
         setUserDescription(about);
         setUserAvatar(avatar);
@@ -18,14 +18,14 @@ function Main(props) {
           return { myId: _id, ...cardData };
         });
         setCards([...cardDataExtended]);
-      }
-    );
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
     <main className="content">
       <section className="profile">
-        <div className="profile__avatar-overlay" onClick={props.onEditAvatar}>
+        <div className="profile__avatar-overlay" onClick={onEditAvatar}>
           <img src={userAvatar} alt="Аватар" className="profile__avatar" />
         </div>
         <div className="profile__info">
@@ -35,7 +35,7 @@ function Main(props) {
               type="button"
               aria-label="Редактировать профиль"
               className="profile__edit-button button"
-              onClick={props.onEditProfile}
+              onClick={onEditProfile}
             ></button>
           </div>
           <p className="profile__description">{userDescription}</p>
@@ -44,24 +44,15 @@ function Main(props) {
           type="button"
           aria-label="Добавить новую картинку"
           className="profile__add-button button"
-          onClick={props.onAddPlace}
+          onClick={onAddPlace}
         ></button>
       </section>
 
       <section className="elements">
         <ul className="elements__list">
-          {cards.map(({ myId, name, link, _id, likes, owner }) => {
+          {cards.map((card) => {
             return (
-              <Card
-                cardId={_id}
-                caption={name}
-                link={link}
-                myId={myId}
-                likes={likes}
-                owner={owner}
-                onCardClick={props.onCardClick}
-                key={_id}
-              />
+              <Card card={card} onCardClick={onCardClick} key={card._id} />
             );
           })}
         </ul>

@@ -1,12 +1,12 @@
-function Card(props) {
+function Card({card, onCardClick}) {
   const handleCardClick = () => {
-    props.onCardClick({ caption: props.caption, link: props.link });
+    onCardClick({ caption: card.name, link: card.link });
   };
 
   return (
     <li className="element">
       <img
-        src={props.link}
+        src={card.link}
         alt="Картинка"
         className="element__picture"
         onClick={handleCardClick}
@@ -17,14 +17,14 @@ function Card(props) {
         className="element__delete-button button"
       ></button>
       <div className="element__info">
-        <h2 className="element__description">{props.caption}</h2>
+        <h2 className="element__description">{card.name}</h2>
         <div className="element__like-group">
           <button
             type="button"
             aria-label="Нравится"
             className="element__like-button"
           ></button>
-          <p className="element__like-count">{props.likes.length}</p>
+          <p className="element__like-count">{card.likes.length}</p>
         </div>
       </div>
     </li>
