@@ -15,13 +15,11 @@ function PopupWithForm({ isOpen, onClose, name, title, children, btnText }) {
     return () => {
       document.removeEventListener("keydown", handleEscClick);
     };
-  });
+  }, [isOpen, onClose]);
 
   return (
     <div
-      className={`popup popup_${name} ${
-        isOpen ? "popup_opened" : null
-      }`}
+      className={`popup popup_${name} ${isOpen ? "popup_opened" : null}`}
       onClick={handleOverlayClick}
     >
       <div className="popup__container">
