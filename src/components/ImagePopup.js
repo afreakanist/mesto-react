@@ -1,6 +1,6 @@
 function ImagePopup({ card, onClose }) {
   const handleOverlayClick = (event) => {
-    if (event.target === event.currentTarget && card.isOpen) onClose();
+    if (event.target === event.currentTarget) onClose();
   };
 
   return (

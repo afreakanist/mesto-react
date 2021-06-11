@@ -1,7 +1,13 @@
 import { useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+function AddPlacePopup({
+  isOpen,
+  onClose,
+  onAddPlace,
+  isPending,
+  setIsPending,
+}) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
 
@@ -15,6 +21,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsPending(true);
 
     onAddPlace({
       name,
@@ -32,7 +39,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      btnText="Создать"
+      btnText={isPending ? "Сохранение..." : "Создать"}
     >
       <label htmlFor="caption" className="popup__field">
         <input

@@ -1,12 +1,19 @@
 import { useRef } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup(props) {
+function EditAvatarPopup({
+  isOpen,
+  onClose,
+  onUpdateAvatar,
+  isPending,
+  setIsPending,
+}) {
   const inputRef = useRef();
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsPending(true);
 
-    props.onUpdateAvatar(inputRef.current.value);
+    onUpdateAvatar(inputRef.current.value);
     inputRef.current.value = "";
   };
 
@@ -14,10 +21,10 @@ function EditAvatarPopup(props) {
     <PopupWithForm
       name="avatar-update"
       title="Обновить аватар"
-      isOpen={props.isOpen}
-      onClose={props.onClose}
+      isOpen={isOpen}
+      onClose={onClose}
       onSubmit={handleSubmit}
-      btnText="Сохранить"
+      btnText={isPending ? "Сохранение..." : "Сохранить"}
     >
       <label htmlFor="avatar" className="popup__field">
         <input

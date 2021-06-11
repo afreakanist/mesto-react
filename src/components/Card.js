@@ -31,7 +31,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     <li className="element">
       <img
         src={card.link}
-        alt="Картинка"
+        alt={card.name}
         className="element__picture"
         onClick={handleCardClick}
       />

@@ -2,7 +2,13 @@ import { useContext, useState, useEffect } from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+function EditProfilePopup({
+  isOpen,
+  onClose,
+  onUpdateUser,
+  isPending,
+  setIsPending,
+}) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
@@ -17,6 +23,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsPending(true);
 
     onUpdateUser({
       name,
@@ -36,7 +43,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       onSubmit={handleSubmit}
       name="edit"
       title="Редактировать профиль"
-      btnText="Сохранить"
+      btnText={isPending ? "Сохранение..." : "Сохранить"}
     >
       <label htmlFor="name" className="popup__field">
         <input
