@@ -1,6 +1,13 @@
-function ImagePopup({card, onClose}) {
+function ImagePopup({ card, onClose }) {
+  const handleOverlayClick = (event) => {
+    if (event.target === event.currentTarget && card.isOpen) onClose();
+  };
+
   return (
-    <div className={`popup popup_picture ${card.isOpen ? 'popup_opened' : null}`}>
+    <div
+      className={`popup popup_picture ${card.isOpen ? "popup_opened" : null}`}
+      onClick={handleOverlayClick}
+    >
       <figure className="popup__figure">
         <button
           type="button"
@@ -9,7 +16,9 @@ function ImagePopup({card, onClose}) {
           onClick={onClose}
         ></button>
         <img src={card.link} alt="Картинка" className="popup__picture" />
-        <figcaption className="popup__picture-caption">{card.caption}</figcaption>
+        <figcaption className="popup__picture-caption">
+          {card.caption}
+        </figcaption>
       </figure>
     </div>
   );
