@@ -1,6 +1,14 @@
 import { useEffect } from "react";
 
-function PopupWithForm({ isOpen, onClose, name, title, children, btnText }) {
+function PopupWithForm({
+  isOpen,
+  onClose,
+  onSubmit,
+  name,
+  title,
+  children,
+  btnText,
+}) {
   const handleOverlayClick = (event) => {
     if (event.target === event.currentTarget && isOpen) onClose();
   };
@@ -19,7 +27,7 @@ function PopupWithForm({ isOpen, onClose, name, title, children, btnText }) {
 
   return (
     <div
-      className={`popup popup_${name} ${isOpen ? "popup_opened" : null}`}
+      className={`popup popup_${name} ${isOpen ? "popup_opened" : ""}`}
       onClick={handleOverlayClick}
     >
       <div className="popup__container">
@@ -34,6 +42,7 @@ function PopupWithForm({ isOpen, onClose, name, title, children, btnText }) {
           className={`popup__form popup__form_type_${name}`}
           name="edit"
           noValidate
+          onSubmit={onSubmit}
         >
           {children}
           <button type="submit" className="popup__submit-button">
