@@ -1,19 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import CurrentUserContext from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 import Card from "./Card";
 
 function Main({ onEditProfile, onEditAvatar, onAddPlace, onCardClick }) {
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
   const [cards, setCards] = useState([]);
+  const currentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([{ name, about, avatar }, data]) => {
-        setUserName(name);
-        setUserDescription(about);
-        setUserAvatar(avatar);
+    Promise.all([api.getInitialCards()])
+      .then(([data]) => {
         setCards([...data]);
       })
       .catch((err) => console.log(err));
@@ -23,11 +19,15 @@ function Main({ onEditProfile, onEditAvatar, onAddPlace, onCardClick }) {
     <main className="content">
       <section className="profile">
         <div className="profile__avatar-overlay" onClick={onEditAvatar}>
-          <img src={userAvatar} alt="Аватар" className="profile__avatar" />
+          <img
+            src={currentUser.avatar}
+            alt="Аватар"
+            className="profile__avatar"
+          />
         </div>
         <div className="profile__info">
           <div className="profile__row">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button
               type="button"
               aria-label="Редактировать профиль"
@@ -35,7 +35,7 @@ function Main({ onEditProfile, onEditAvatar, onAddPlace, onCardClick }) {
               onClick={onEditProfile}
             ></button>
           </div>
-          <p className="profile__description">{userDescription}</p>
+          <p className="profile__description">{currentUser.description}</p>
         </div>
         <button
           type="button"
